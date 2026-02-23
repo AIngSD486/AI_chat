@@ -3,6 +3,7 @@ import os
 import requests
 import datetime
 import json
+import time
 
 # 设置页面配置
 st.set_page_config(
@@ -80,7 +81,12 @@ def save_session():
     try:
         with open(f'sessions/{st.session_state.niki_name}.json', 'w', encoding='utf-8') as f:
             json.dump(session_data, f, ensure_ascii=False, indent=2)
-        st.success("会话已保存")
+        # 显示临时成功提示
+        success_placeholder = st.empty()
+        success_placeholder.success("会话已保存")
+        # 3秒后清除提示
+        time.sleep(3)
+        success_placeholder.empty()
     except Exception as e:
         st.error(f"保存会话失败: {str(e)}")
 
