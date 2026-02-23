@@ -15,11 +15,19 @@ def install_missing_libraries():
         except ImportError:
             st.info(f"正在安装缺失的库: {library}")
             try:
-                # 使用pip安装库
-                subprocess.check_call([sys.executable, '-m', 'pip', 'install', library])
+                # 先尝试使用 --user 标志安装
+                st.info("使用 --user 标志安装库...")
+                subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--user', library])
                 st.success(f"成功安装: {library}")
             except Exception as e:
-                st.error(f"安装失败: {library}, 错误: {str(e)}")
+                st.warning(f"使用 --user 标志安装失败，尝试常规安装...")
+                try:
+                    # 尝试常规安装
+                    subprocess.check_call([sys.executable, '-m', 'pip', 'install', library])
+                    st.success(f"成功安装: {library}")
+                except Exception as e:
+                    st.error(f"安装失败: {library}, 错误: {str(e)}")
+                    st.info("您可能需要手动安装依赖库，然后重新运行应用。")
 
 # 检查并安装缺失的库
 install_missing_libraries()
@@ -28,7 +36,7 @@ install_missing_libraries()
 try:
     from openai import OpenAI
 except ImportError:
-    st.error("无法导入openai库，请手动安装: pip install openai")
+    st.error("无法导入openai库，请手动安装: pip install --user openai")
     st.stop()
 
 
