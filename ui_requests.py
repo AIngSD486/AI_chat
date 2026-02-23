@@ -36,12 +36,30 @@ if 'current_session' not in st.session_state:
 
 # 设置大标题
 st.title("爱聊天")
-# logo - 使用跨平台的路径
-# logo_path = os.path.join("resource", "logo.png")
-# if os.path.exists(logo_path):
-#     st.logo(logo_path)
-# else:
-#     st.info("Logo文件不存在，使用默认图标")
+# logo - 增强路径处理
+logo_path = "resource/logo.png"
+# 尝试多种路径格式
+possible_paths = [
+    logo_path,
+    "resource\\logo.png",
+    os.path.join(os.getcwd(), "resource", "logo.png"),
+    os.path.join(os.path.dirname(__file__), "resource", "logo.png")
+]
+
+logo_found = False
+for path in possible_paths:
+    try:
+        if os.path.exists(path):
+            st.logo(path)
+            logo_found = True
+            break
+    except Exception as e:
+        # 捕获任何路径相关的错误
+        pass
+
+if not logo_found:
+    # 如果所有路径都失败，使用默认图标
+    st.info("Logo文件不存在或无法访问，使用默认图标")
 st.write("一个基于deepseek的聊天机器人")
 
 # 保存会话
