@@ -37,11 +37,11 @@ if 'current_session' not in st.session_state:
 # 设置大标题
 st.title("爱聊天")
 # logo - 使用跨平台的路径
-logo_path = os.path.join("resource", "logo.png")
-if os.path.exists(logo_path):
-    st.logo(logo_path)
-else:
-    st.info("Logo文件不存在，使用默认图标")
+# logo_path = os.path.join("resource", "logo.png")
+# if os.path.exists(logo_path):
+#     st.logo(logo_path)
+# else:
+#     st.info("Logo文件不存在，使用默认图标")
 st.write("一个基于deepseek的聊天机器人")
 
 # 保存会话
