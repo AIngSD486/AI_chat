@@ -1,8 +1,35 @@
 import streamlit as st
 import os
-from openai import OpenAI
+import sys
+import subprocess
 import datetime
 import json
+
+# 自动安装缺失的库
+def install_missing_libraries():
+    required_libraries = ['openai']
+    
+    for library in required_libraries:
+        try:
+            __import__(library)
+        except ImportError:
+            st.info(f"正在安装缺失的库: {library}")
+            try:
+                # 使用pip安装库
+                subprocess.check_call([sys.executable, '-m', 'pip', 'install', library])
+                st.success(f"成功安装: {library}")
+            except Exception as e:
+                st.error(f"安装失败: {library}, 错误: {str(e)}")
+
+# 检查并安装缺失的库
+install_missing_libraries()
+
+# 现在导入openai库
+try:
+    from openai import OpenAI
+except ImportError:
+    st.error("无法导入openai库，请手动安装: pip install openai")
+    st.stop()
 
 
 def getDateTime():
